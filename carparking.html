@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Parking Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, select {
+            margin: 10px 0;
+            padding: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Car Parking Management System</h1>
+    <div>
+        <h2>Park Car</h2>
+        <input type="text" id="carNumber" placeholder="Car Number Plate" required>
+        <select id="parkingType">
+            <option value="regular">Regular Slot</option>
+            <option value="premium">Premium Slot</option>
+        </select>
+        <input type="number" id="slotNumber" placeholder="Slot Number" required>
+        <button onclick="parkCar()">Park Car</button>
+    </div>
+    <div>
+        <h2>Vacate Slot</h2>
+        <input type="text" id="vacateCarNumber" placeholder="Car Number Plate" required>
+        <select id="vacateParkingType">
+            <option value="regular">Regular Slot</option>
+            <option value="premium">Premium Slot</option>
+        </select>
+        <input type="number" id="vacateSlotNumber" placeholder="Slot Number" required>
+        <button onclick="vacateSlot()">Vacate Slot</button>
+    </div>
+    <div id="response"></div>
+
+    <script>
+        async function parkCar() {
+            const carNumber = document.getElementById('carNumber').value;
+            const parkingType = document.getElementById('parkingType').value;
+            const slotNumber = document.getElementById('slotNumber').value;
+
+            const response = await fetch('/park', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ carNumber, parkingType, slotNumber }),
+            });
+
+            const result = await response.text();
+            document.getElementById('response').innerText = result;
+        }
+
+        async function vacateSlot() {
+            const carNumber = document.getElementById('vacateCarNumber').value;
+            const parkingType = document.getElementById('vacateParkingType').value;
+            const slotNumber = document.getElementById('vacateSlotNumber').value;
+
+            const response = await fetch('/vacate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ carNumber, parkingType, slotNumber }),
+            });
+
+            const result = await response.text();
+            document.getElementById('response').innerText = result;
+        }
+    </script>
+</body>
+</html>
